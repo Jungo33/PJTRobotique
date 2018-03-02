@@ -1,0 +1,47 @@
+#include <SPI.h>  
+#include <Pixy.h>
+
+Pixy pixy;
+
+
+  static int i=0;
+
+  int nb_mes=50;
+  int pas=1000/nb_mes;   //#pas=1000/nb_mes
+  int pas2=1000/nb_mes/3;
+  int pos_i=pas;     //donne la position angulaire des servomoteurs selon la rotation autour de l'axe z 
+
+  
+  int j;  
+  uint16_t blocks;
+  char buf[32]; 
+
+
+void setup() {
+  // put your setup code here, to run once:
+   Serial.begin(9600);
+   Serial.print("Starting...\n");
+   pixy.init();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+
+  while (i<nb_mes+1)
+  {
+    i++;
+    pos_i=pas*(i-1);
+    //Serial.print(pos_i);
+    pixy.setServos(pos_i, pos_i);
+    delay(200);
+    Serial.print(pixy.blocks[0].x);
+    blocks = pixy.getBlocks();
+
+    if (pixy.blocks[0].x!=256)
+    {
+      delay(10);
+      
+      }
+    }
+}
